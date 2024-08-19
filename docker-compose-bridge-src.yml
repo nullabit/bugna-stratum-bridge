@@ -1,0 +1,16 @@
+services:
+  bugna_bridge:
+    build:
+      context: .
+      no_cache: true
+    container_name: bugna_bridge
+    restart: unless-stopped
+    user: "0"
+    command:
+      - '-stats=false'
+      - '-bugna=host.docker.internal:16110'
+    ports:
+      - 5556:5556
+      - 2115:2115
+    extra_hosts:
+      - host.docker.internal:host-gateway
