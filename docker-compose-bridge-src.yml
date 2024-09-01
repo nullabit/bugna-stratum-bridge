@@ -10,7 +10,7 @@ services:
       - '-stats=false'
       - '-bugna=host.docker.internal:16110'
     ports:
-      - 5556:5556
-      - 2115:2115
+      - 5555:5555
+      - 2114:2114
     extra_hosts:
       - host.docker.internal:host-gateway

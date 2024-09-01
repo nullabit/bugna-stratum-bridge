@@ -22,4 +22,4 @@ scrape_configs:
          # metrics_path defaults to '/metrics'
          # scheme defaults to 'http'.
     static_configs:
-      - targets: ['bugna_bridge:2115']
+      - targets: ['bugna_bridge:2114']

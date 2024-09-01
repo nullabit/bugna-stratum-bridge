@@ -9,14 +9,14 @@ services:
     command:
       - '-log=true'
       - '-stats=false'
-      - '-stratum=:5556'
-      - '-prom=:2115'
+      - '-stratum=:5555'
+      - '-prom=:2114'
       - '-bugna=host.docker.internal:38138'
       - '-mindiff=64'
       - '-vardiff=true'
     ports:
-      - 5556:5556
-      - 2115:2115
+      - 5555:5555
+      - 2114:2114
     extra_hosts:
       - host.docker.internal:host-gateway
   grafana:
@@ -29,7 +29,7 @@ services:
 #    env_file:
 #      - ./docker/grafana.env
     ports:
-      - 3001:3001
+      - 3000:3000
     extra_hosts:
       - host.docker.internal:host-gateway
   prometheus:
@@ -40,6 +40,6 @@ services:
       - prometheus_data:/prometheus
       - ./docker/prometheus-internal.yml:/etc/prometheus/prometheus.yml
     ports:
-      - 9091:9091
+      - 9090:9090
     extra_hosts:
       - host.docker.internal:host-gateway

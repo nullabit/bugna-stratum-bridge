@@ -39,7 +39,7 @@ func DefaultConfig(logger *zap.Logger) StratumListenerConfig {
 	return StratumListenerConfig{
 		StateGenerator: func() any { return nil },
 		HandlerMap:     DefaultHandlers(),
-		Port:           ":5556",
+		Port:           ":5555",
 		Logger:         logger,
 	}
 }

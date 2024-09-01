@@ -14,11 +14,11 @@ Tips appreciated:
 - [@onemorebsmith](https://github.com/onemorebsmith): `kaspa:qp9v6090sr8jjlkq7r3f4h9un5rtfhu3raknfg3cca9eapzee57jzew0kxwlp`
 - [@rdugan](https://github.com/rdugan): `kaspa:qrkhyhej7h0gmmvsuf8mmufget4n4xnlwx5j360sz70q7xvu0hlaxfmt9p8j8`
 - [@lukewarmIQ](https://github.com/shadowofnight98): `sedra:qraz34m4j5977nx6pnerf5uchq5cspafnng77eyyega8y0atgc4f2y46d8kuc`
-- [@nullabit] (https://github.com/nullabit): `bugna:qp9fgldtnwyxxmg256tzjpz6grnmzfqc0avj8c94ul6e08eyzdxskrwrx4yjz`
+- [@nullabit](https://github.com/nullabit): `bugna:qp9fgldtnwyxxmg256tzjpz6grnmzfqc0avj8c94ul6e08eyzdxskrwrx4yjz`
 
 # Simpleguide:
 
--1. download bugnad.exe for the cli wallet. Run it with a bat file as `bugnad --utxoindex`. File found [here](https://github.com/bugnacoin/bugnad)
+-1. download bugnad.exe for the cli wallet. Run it with a bat file as `bugnad --utxoindex`. File found [here](https://github.com/bugnanetwork/bugnad)
 
 -2. download Docker Desktop [here](https://www.docker.com/products/docker-desktop/)
 
@@ -30,7 +30,7 @@ Tips appreciated:
 
 -6. connect to your miner using the ip of your device running the docker container with port `5555`
 
--7. Congrats! You can monitor it at the device's ip and port `3001` login is admin/admin
+-7. Congrats! You can monitor it at the device's ip and port `3000` login is admin/admin
 
 
 # Features:
@@ -63,10 +63,10 @@ Detailed setup [instructions](/docs/monitoring-setup.md)
 
 ### Prometheus API
 
-If the app is run with the `-prom={port}` flag the application will host stats on the port specified by `{port}`, these stats are documented in the file [prom.go](src/bugnastratum/prom.go). This is intended to be use by prometheus but the stats can be fetched and used independently if desired. `curl http://localhost:2115/metrics | grep bugna_` will get a listing of current stats. All published stats have a `bugna_` prefix for ease of use.
+If the app is run with the `-prom={port}` flag the application will host stats on the port specified by `{port}`, these stats are documented in the file [prom.go](src/bugnastratum/prom.go). This is intended to be use by prometheus but the stats can be fetched and used independently if desired. `curl http://localhost:2114/metrics | grep bugna_` will get a listing of current stats. All published stats have a `bugna_` prefix for ease of use.
 
 ```
-user:~$ curl http://localhost:2115/metrics | grep bugna_
+user:~$ curl http://localhost:2114/metrics | grep bugna_
 # HELP bugna_estimated_network_hashrate_gauge Gauge representing the estimated network hashrate
 # TYPE bugna_estimated_network_hashrate_gauge gauge
 bugna_estimated_network_hashrate_gauge 2.43428982879776e+14
@@ -111,7 +111,7 @@ All-in-one (build + run) `cd cmd/bugnabridge/;go build .;./bugnabridge`
 
 * Clone this repository using git (`git clone https://github.com/Shadowofnight98/Bugna-stratum-bridge.git`) or download and unpack the [zip file](https://github.com/Shadowofnight98/Bugna-stratum-bridge/archive/refs/tags/Main.zip)
 
-* Enter the 'bugna-stratum-bridge' directory and type the command `docker compose -f docker-compose-all-src.yml up -d --build` [^1].  This will run the bridge assuming a local bugnad node with default port settings, and listen on port 5555 for incoming stratum connections.  These settings can be updated in the [config.yaml](cmd/bugnabridge/config.yaml) file, or overridden by modifying/adding/deleting the parameters in the 'command' section of the [docker-compose-all-src.yml](docker-compose-all-src.yml) file.  Additionally, Prometheus (the stats database) and Grafana (the dashboard) will be started and accessible on ports 9091 and 3001 respectively.  Once all services are running, the dashboard should be reachable at <http://127.0.0.1:3000/d/x7cE7G74k1/ksb-monitoring> with default user/pass: admin/admin
+* Enter the 'bugna-stratum-bridge' directory and type the command `docker compose -f docker-compose-all-src.yml up -d --build` [^1].  This will run the bridge assuming a local bugnad node with default port settings, and listen on port 5555 for incoming stratum connections.  These settings can be updated in the [config.yaml](cmd/bugnabridge/config.yaml) file, or overridden by modifying/adding/deleting the parameters in the 'command' section of the [docker-compose-all-src.yml](docker-compose-all-src.yml) file.  Additionally, Prometheus (the stats database) and Grafana (the dashboard) will be started and accessible on ports 9090 and 3000 respectively.  Once all services are running, the dashboard should be reachable at <http://127.0.0.1:3000/d/x7cE7G74k1/ksb-monitoring> with default user/pass: admin/admin
 
 [^1]: This command builds the bridge component from source, rather than the previous behavior of pulling down a pre-built image.  You may still use the pre-built image by replacing 'docker-compose-all-src.yml' with 'docker-compose-all.yml', but it is not guaranteed to be up to date, so compiling from source is the better alternative.
 
@@ -140,7 +140,7 @@ Configuration for the bridge is done via the [config.yaml](cmd/bugnabridge/confi
 # stratum_listen_port: the port that will be listening for incoming stratum 
 # traffic
 # Note `:PORT` format is needed if not specifiying a specific ip range 
-stratum_port: :5556
+stratum_port: :5555
 
 # bugnad_address: address/port of the rpc server for kaspad, typically 16110
 # For a list of public nodes, run `nslookup mainnet-dnsseed.daglabs-dev.com` 
@@ -221,7 +221,7 @@ log_to_file: true
 # you can get the raw metrics (along with default golang metrics) using
 # `curl http://localhost:{prom_port}/metrics`
 # Note `:PORT` format is needed if not specifiying a specific ip range 
-prom_port: :2115
+prom_port: :2114
 
 ```
 
@@ -230,8 +230,8 @@ Config parameters can also be specificied by command line flags, which have slig
 ```
   - '-log=true' # enable/disable logging
   - '-stats=false' # include stats readout every 10s in log
-  - '-stratum=:5556' # port to which miners should connect
-  - '-prom=:2115' # port at which raw prometheus stats will be available
+  - '-stratum=:5555' # port to which miners should connect
+  - '-prom=:2114' # port at which raw prometheus stats will be available
   - '-bugna=host.docker.internal:16110' # host/port at which bugnad node is running
   - '-mindiff=64' # minimum share difficulty to accept from miner(s)
   - '-vardiff=true' # enable auto-adjusting variable min diff
